@@ -1,0 +1,384 @@
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+.container {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f5f5;
+  animation: fadeIn 0.8s ease;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================
+   PANEL IZQUIERDO
+========================= */
+.leftPanel {
+  flex: 1;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+  animation: slideInLeft 0.8s ease;
+}
+
+.leftPanel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('/hero3.jpg') top center/cover no-repeat;
+  opacity: 0.3;
+  z-index: 0;
+  transition: opacity 0.5s ease;
+}
+
+.leftPanel:hover::before {
+  opacity: 0.4;
+}
+
+.brand {
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.6s ease 0.2s both;
+}
+
+.brandTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.brandSubtitle {
+  font-size: 0.9rem;
+  color: #c9a96e;
+  letter-spacing: 1px;
+}
+
+/* =========================
+   QUOTE Y BOTÓN
+========================= */
+.quote {
+  position: relative;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+  max-width: 300px;
+  animation: fadeInUp 0.6s ease 0.4s both;
+}
+
+.quote p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.quote span {
+  font-size: 0.8rem;
+  color: #c9a96e;
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+/* Botón retráctil */
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 0.8rem;
+  border-radius: 30px;
+  width: 38px;
+  height: 30px;
+  overflow: hidden;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+}
+
+.backButton i {
+  font-size: 0.9rem;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.backText {
+  opacity: 0;
+  width: 0;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.backButton:hover {
+  width: 145px;
+  background: rgba(201, 169, 110, 0.9);
+  color: #1a1a1a;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.backButton:hover .backText {
+  opacity: 1;
+  width: auto;
+  margin-top: 22px;
+  margin-left: 0;
+  color: #1a1a1a;
+}
+
+.backButton:hover i {
+  transform: translateX(-3px);
+}
+
+/* =========================
+   PANEL DERECHO
+========================= */
+.rightPanel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: slideInRight 0.8s ease;
+}
+
+.card {
+  width: 100%;
+  max-width: 480px;
+  border: none !important;
+  border-radius: 20px !important;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1) !important;
+  background: white !important;
+  overflow: hidden;
+}
+
+.cardHeader {
+  text-align: center;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.cardTitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.cardSubtitle {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+/* =========================
+   FORMULARIO
+========================= */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #333;
+  display: block;
+}
+
+.input {
+  width: 100% !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 10px !important;
+  border: 1px solid #e0e0e0 !important;
+  transition: all 0.3s ease !important;
+  font-size: 0.95rem !important;
+  box-sizing: border-box !important;
+}
+
+.input:focus {
+  border-color: #c9a96e !important;
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.2) !important;
+  outline: none !important;
+}
+
+.input:hover {
+  border-color: #c9a96e !important;
+}
+
+/* =========================
+   ERROR
+========================= */
+.errorMessage {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  animation: shake 0.5s ease;
+}
+
+/* =========================
+   BOTÓN REGISTRO
+========================= */
+.registerBtn {
+  background: #c9a96e !important;
+  border: none !important;
+  color: #1a1a1a !important;
+  font-weight: 600 !important;
+  padding: 0.85rem 1.25rem !important;
+  border-radius: 10px !important;
+  transition: all 0.3s ease !important;
+  width: 100%;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.registerBtn:hover {
+  background: #a8844a !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 20px rgba(201, 169, 110, 0.35) !important;
+}
+
+.registerBtn:active {
+  transform: translateY(0) !important;
+}
+
+/* =========================
+   DIVIDER
+========================= */
+.divider {
+  margin: 0.5rem 0 !important;
+}
+
+.dividerText {
+  color: #aaa;
+  font-size: 0.8rem;
+  padding: 0 1rem;
+}
+
+/* =========================
+   SECCIÓN LOGIN
+========================= */
+.loginSection {
+  text-align: center;
+  margin-top: -20px;
+  margin-bottom: 20px;
+}
+
+.loginText {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.loginLinkBtn {
+  color: #c9a96e !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+}
+
+.loginLinkBtn:hover {
+  color: #a8844a !important;
+  transform: translateX(5px);
+}
+
+/* =========================
+   ANIMACIONES
+========================= */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+  20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  
+  .leftPanel {
+    display: none;
+  }
+  
+  .rightPanel {
+    padding: 1.5rem;
+  }
+  
+  .card {
+    max-width: 100%;
+    margin: 1rem;
+  }
+  
+  .cardTitle {
+    font-size: 1.5rem;
+  }
+}

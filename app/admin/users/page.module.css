@@ -1,0 +1,564 @@
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+.container {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* =========================
+   HEADER
+========================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.titleIcon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c9a96e;
+  font-size: 1.4rem;
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+.titleSection h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-top: 20px;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* =========================
+   LINK PAPELERA
+========================= */
+.trashLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #1a1a1a;
+  color: #c9a96e;
+  padding: 0.5rem 1rem;
+  border-radius: 40px;
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  margin-top: 20px;
+}
+
+.trashLink:hover {
+  background: #c9a96e;
+  color: #1a1a1a;
+  transform: translateY(-2px);
+}
+
+.trashBadge {
+  background: #c9a96e;
+  color: #1a1a1a;
+  border-radius: 20px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.trashLink:hover .trashBadge {
+  background: #1a1a1a;
+  color: #c9a96e;
+}
+
+/* =========================
+   BUSCADOR
+========================= */
+.searchSection {
+  position: relative;
+  margin-top: 20px;
+  margin-right: 10px;
+}
+
+.searchSection i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 0.9rem;
+  z-index: 1;
+}
+
+.searchInput {
+  padding: 0.7rem 1rem 0.7rem 2.5rem !important;
+  border-radius: 40px !important;
+  border: 1px solid #e0e0e0 !important;
+  background: white !important;
+  width: 280px;
+  transition: all 0.3s ease !important;
+}
+
+.searchInput:focus {
+  border-color: #c9a96e !important;
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.2) !important;
+  outline: none;
+}
+
+/* =========================
+   TABLA
+========================= */
+.table {
+  border-radius: 20px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  height: 25%;
+}
+
+:global(.p-datatable) {
+  border: none !important;
+}
+
+:global(.p-datatable-thead > tr > th) {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #888;
+  font-weight: 600;
+  border-bottom: 1px solid #f0f0f0 !important;
+  background: #fafafa !important;
+  padding: 1rem 0.75rem !important;
+}
+
+:global(.p-datatable-tbody > tr) {
+  transition: all 0.2s ease;
+}
+
+:global(.p-datatable-tbody > tr:hover) {
+  background: rgba(253, 253, 253, 0.04) !important;
+}
+
+:global(.p-datatable-tbody > tr > td) {
+  padding: 0.9rem 0.75rem;
+  border-bottom: 1px solid #f5f5f5 !important;
+}
+
+/* =========================
+   PAGINADOR
+========================= */
+:global(.p-paginator) {
+  border: none !important;
+  margin-top: 1.5rem;
+  background: transparent !important;
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 10px;
+}
+
+/* Botones de página (1, 2, 3, ...) */
+:global(.p-paginator .p-paginator-page) {
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #666;
+}
+
+/* Botones de navegación (Primero, Anterior, Siguiente, Último) */
+:global(.p-paginator .p-paginator-first),
+:global(.p-paginator .p-paginator-prev),
+:global(.p-paginator .p-paginator-next),
+:global(.p-paginator .p-paginator-last) {
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+}
+
+/* Página activa */
+:global(.p-paginator .p-highlight) {
+  background: #1a1a1a !important;
+  color: #c9a96e !important;
+}
+
+/* Hover en botones */
+:global(.p-paginator button:hover) {
+  background: rgba(201, 169, 110, 0.1) !important;
+  color: #c9a96e !important;
+}
+
+/* Dropdown de "Filas por página" */
+:global(.p-paginator .p-dropdown) {
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  background: white;
+  height: 36px;
+}
+
+:global(.p-paginator .p-dropdown-label) {
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem 0 1rem;
+  font-size: 0.85rem;
+}
+
+:global(.p-paginator .p-dropdown-trigger) {
+  width: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================
+   TAGS DE ROL
+========================= */
+.adminTag {
+  background: #1a1a1a !important;
+  color: #c9a96e !important;
+  border: none !important;
+  font-weight: 500 !important;
+  width: 80%;
+}
+
+.userTag {
+  background: #eef2ff !important;
+  color: #3b82f6 !important;
+  border: none !important;
+  font-weight: 500 !important;
+}
+
+/* =========================
+   PAGINADOR
+========================= */
+:global(.p-paginator) {
+  border: none !important;
+  margin-top: 1rem;
+  background: transparent !important;
+}
+
+:global(.p-paginator .p-paginator-page) {
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+:global(.p-paginator .p-highlight) {
+  background: #1a1a1a !important;
+  color: #c9a96e !important;
+}
+
+:global(.p-paginator button:hover) {
+  background: rgba(201, 169, 110, 0.1) !important;
+}
+
+/* =========================
+   BOTONES DE ACCIÓN
+========================= */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.editBtn {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #888;
+}
+
+.editBtn:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.deleteBtn {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #888;
+}
+
+.deleteBtn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+/* =========================
+   DIALOG
+========================= */
+.userDialog :global(.p-dialog-header) {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: white;
+  border-radius: 16px 16px 0 0;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 2px solid #c9a96e;
+}
+
+.userDialog :global(.p-dialog-header-icon) {
+  color: white;
+}
+
+.userDialog :global(.p-dialog-content) {
+  padding: 1.5rem;
+  background: #f8f9fa;
+}
+
+.userDialog :global(.p-dialog-footer) {
+  display: none;
+}
+
+/* =========================
+   FORMULARIO
+========================= */
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fieldLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.fieldLabel i {
+  color: #c9a96e;
+  font-size: 0.9rem;
+}
+
+.fieldInput {
+  width: 100%;
+  padding: 0.75rem 1rem !important;
+  border-radius: 12px !important;
+  border: 1px solid #e0e0e0 !important;
+  background: white !important;
+  transition: all 0.3s ease !important;
+}
+
+.fieldInput:focus {
+  border-color: #c9a96e !important;
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.2) !important;
+  outline: none;
+}
+
+/* =========================
+   ROLES CARDS
+========================= */
+.roleOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.roleCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  border: 2px solid #eaeaea;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.roleCard i {
+  font-size: 1.5rem;
+  color: #999;
+  transition: all 0.3s ease;
+}
+
+.roleCard div {
+  flex: 1;
+}
+
+.roleCard strong {
+  display: block;
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 0.2rem;
+}
+
+.roleCard span {
+  font-size: 0.7rem;
+  color: #999;
+}
+
+.roleCard:hover {
+  border-color: #c9a96e;
+  background: #faf5eb;
+}
+
+.roleCard:hover i {
+  color: #c9a96e;
+}
+
+.roleCardActive {
+  border-color: #c9a96e;
+  background: #faf5eb;
+}
+
+.roleCardActive i {
+  color: #c9a96e;
+}
+
+.roleCardActive strong {
+  color: #c9a96e;
+}
+
+/* =========================
+   BOTONES DE ACCIÓN FORM
+========================= */
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #eaeaea;
+}
+
+.cancelBtn {
+  background: transparent;
+  border: 1px solid #ddd;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancelBtn:hover {
+  background: #f5f5f5;
+  border-color: #c9a96e;
+  color: #c9a96e;
+}
+
+.saveBtn {
+  background: #c9a96e;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.saveBtn:hover {
+  background: #b8965d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(201, 169, 110, 0.3);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .titleSection {
+    justify-content: space-between;
+  }
+  
+  .searchSection {
+    width: 100%;
+  }
+  
+  .searchInput {
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  .userDialog {
+    width: 95% !important;
+    margin: 1rem;
+  }
+  
+  .roleCard {
+    padding: 0.75rem;
+  }
+  
+  .roleCard i {
+    font-size: 1.2rem;
+  }
+  
+  .formActions {
+    flex-direction: column;
+  }
+  
+  .cancelBtn,
+  .saveBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}

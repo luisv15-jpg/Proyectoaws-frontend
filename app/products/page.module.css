@@ -1,0 +1,417 @@
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  min-height: calc(100vh - 80px);
+}
+
+/* =========================
+   HEADER
+========================= */
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #888;
+}
+
+/* =========================
+   FILTROS
+========================= */
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .filters {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.searchWrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchWrapper i {
+  position: absolute;
+  left: 1rem;
+  color: #aaa;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem !important;
+  border-radius: 12px !important;
+  border: 1px solid #e0e0e0 !important;
+  transition: all 0.3s ease !important;
+  background: white;
+  font-size: 0.9rem;
+}
+
+.searchInput:focus {
+  border-color: #c9a96e !important;
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.2) !important;
+  outline: none;
+}
+
+.categoryWrapper {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .categoryWrapper {
+    width: 260px;
+  }
+}
+
+/* =========================
+   DROPDOWN COMPLETO
+========================= */
+
+/* Contenedor principal */
+.categorySelect {
+  width: 100%;
+}
+
+/* Dropdown base */
+:global(.p-dropdown) {
+  width: 100%;
+  border-radius: 12px !important;
+  border: 1px solid #e0e0e0 !important;
+  background: white;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+:global(.p-dropdown:hover) {
+  border-color: #c9a96e !important;
+}
+
+:global(.p-dropdown:focus-within) {
+  border-color: #c9a96e !important;
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.2) !important;
+}
+
+/* Label del dropdown */
+:global(.p-dropdown-label) {
+  padding: 0.75rem 3rem 0.75rem 1rem !important;
+  font-size: 0.9rem;
+  color: #333;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Label cuando está vacío (placeholder) */
+:global(.p-dropdown-label-empty) {
+  color: #aaa !important;
+}
+
+/* Flecha del dropdown */
+:global(.p-dropdown-trigger) {
+  position: absolute !important;
+  right: 0 !important;
+  top: 0 !important;
+  width: 2.5rem !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #888 !important;
+  transition: all 0.3s ease;
+}
+
+/* Botón clear (X) */
+:global(.p-dropdown-clear-icon) {
+  position: absolute !important;
+  right: 2.5rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #aaa !important;
+  font-size: 0.8rem !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer;
+  z-index: 10;
+}
+
+:global(.p-dropdown-clear-icon:hover) {
+  color: #c9a96e !important;
+  transform: translateY(-50%) scale(1.1) !important;
+}
+
+/* =========================
+   PANEL DESPLEGABLE
+========================= */
+:global(.p-dropdown-panel) {
+  background: white !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid #eaeaea !important;
+  margin-top: 8px !important;
+  overflow: hidden;
+  animation: dropdownFadeIn 0.2s ease;
+}
+
+:global(.p-dropdown-items-wrapper) {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+:global(.p-dropdown-items) {
+  padding: 0.5rem 0 !important;
+  margin: 0;
+  list-style: none;
+}
+
+:global(.p-dropdown-item) {
+  padding: 0.75rem 1rem !important;
+  color: #444 !important;
+  font-size: 0.9rem !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer;
+}
+
+:global(.p-dropdown-item:hover) {
+  background: #f5f5f5 !important;
+  color: #c9a96e !important;
+}
+
+:global(.p-dropdown-item.p-highlight) {
+  background: #faf5eb !important;
+  color: #c9a96e !important;
+  font-weight: 500;
+}
+
+:global(.p-dropdown-item.p-highlight:hover) {
+  background: #f0e8d8 !important;
+}
+
+/* Scrollbar personalizada */
+:global(.p-dropdown-items-wrapper::-webkit-scrollbar) {
+  width: 6px;
+}
+
+:global(.p-dropdown-items-wrapper::-webkit-scrollbar-track) {
+  background: #f0f0f0;
+  border-radius: 3px;
+}
+
+:global(.p-dropdown-items-wrapper::-webkit-scrollbar-thumb) {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+:global(.p-dropdown-items-wrapper::-webkit-scrollbar-thumb:hover) {
+  background: #c9a96e;
+}
+
+/* Animación */
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   PRODUCT GRID
+========================= */
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .productGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .productGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .productGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* =========================
+   PRODUCT CARD
+========================= */
+.productCard {
+  border: none !important;
+  border-radius: 16px !important;
+  background: white !important;
+  overflow: hidden;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+  height: 103%;
+}
+
+.productCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+.imageWrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px 16px 0 0;
+}
+
+.productImage {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.productCard:hover .productImage {
+  transform: scale(1.05);
+}
+
+.offerBadge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: #c9a96e;
+  color: #1a1a1a;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+.productTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+  margin-top: 1rem;
+  margin-left: 10px;
+}
+
+.productDescription {
+  font-size: 0.8rem;
+  color: #888;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* =========================
+   CARD FOOTER
+========================= */
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.priceContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.originalPrice {
+  font-size: 0.8rem;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+.normalPrice {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.offerPrice {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #c9a96e;
+}
+
+.detailBtn {
+  background: transparent !important;
+  border: 1px solid #c9a96e !important;
+  color: #c9a96e !important;
+  border-radius: 8px !important;
+  padding: 0.4rem 0.8rem !important;
+  font-size: 0.8rem !important;
+  transition: all 0.3s ease !important;
+  margin-right: 10px;
+}
+
+.detailBtn:hover {
+  background: #c9a96e !important;
+  color: #1a1a1a !important;
+  transform: translateY(-2px);
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+.emptyState {
+  text-align: center;
+  padding: 4rem;
+  background: white;
+  border-radius: 16px;
+  color: #aaa;
+}
+
+.emptyState i {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* =========================
+   SKELETON
+========================= */
+.skeletonCard {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
