@@ -140,7 +140,7 @@
 .loginBtn {
   background: #c9a96e !important;
   border: none !important;
-  color: #1a1a1a !important;
+  color: #000000 !important;
   font-weight: 500 !important;
   padding: 0.70rem 1.20rem !important;
   border-radius: 10px !important;
@@ -148,6 +148,99 @@
   width: 100%;
   cursor: pointer;
   font-size: 1rem;
+}
+
+/* Agregar o modificar estos estilos */
+
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #f8f9fa;
+  padding: 0.3rem 0.8rem 0.3rem 0.5rem;
+  border-radius: 40px;
+  border: 1px solid #eaeaea;
+}
+
+/* Avatar del usuario */
+.userAvatarLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.userAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #c9a96e;
+  transition: all 0.3s ease;
+}
+
+.userAvatar:hover {
+  transform: scale(1.05);
+  border-color: #b8965d;
+}
+
+.userAvatarPlaceholder {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c9a96e;
+  font-size: 1rem;
+  border: 2px solid #c9a96e;
+  transition: all 0.3s ease;
+}
+
+.userAvatarPlaceholder:hover {
+  transform: scale(1.05);
+}
+
+/* Nombre del usuario */
+.userNameLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1a1a1a;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.userNameLink:hover {
+  color: #c9a96e;
+}
+
+/* Botón de logout */
+.logoutBtn {
+  color: #888 !important;
+  margin-left: 0.25rem !important;
+}
+
+.logoutBtn:hover {
+  color: #ef4444 !important;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .userMenu {
+    padding: 0.2rem 0.5rem 0.2rem 0.3rem;
+  }
+  
+  .userAvatar, .userAvatarPlaceholder {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .userNameLink span {
+    display: none; /* Ocultar nombre en móvil, solo mostrar avatar */
+  }
 }
 
 .loginBtn:hover {
@@ -158,6 +251,46 @@
 
 .loginBtn:active {
   transform: translateY(0) !important;
+}
+
+/* Agregar estos estilos o modificar los existentes */
+
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f8f9fa;
+  padding: 0.3rem 0.8rem 0.3rem 1rem;
+  border-radius: 40px;
+  border: 1px solid #eaeaea;
+}
+
+.userNameLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1a1a1a;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.userNameLink:hover {
+  color: #c9a96e;
+}
+
+.userNameLink i {
+  font-size: 0.9rem;
+  color: #c9a96e;
+}
+
+.logoutBtn {
+  color: #888 !important;
+}
+
+.logoutBtn:hover {
+  color: #ef4444 !important;
 }
 
 /* =========================

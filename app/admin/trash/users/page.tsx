@@ -83,40 +83,62 @@ export default function TrashUsersPage() {
   const actionBody = (rowData: DeletedUser) => {
     return (
       <div className={styles.actions}>
-        <Button
-          icon="pi pi-refresh"
-          className="p-button-rounded p-button-text p-button-success"
+        <button
+          className={styles.restoreBtn}
           onClick={() => handleRestore(rowData)}
-          tooltip="Restaurar"
-        />
-        <Button
-          icon="pi pi-times-circle"
-          className="p-button-rounded p-button-text p-button-danger"
+          title="Restaurar usuario"
+        >
+          <i className="pi pi-refresh"></i>
+        </button>
+        <button
+          className={styles.deleteBtn}
           onClick={() => handlePermanentDelete(rowData)}
-          tooltip="Eliminar permanentemente"
-        />
+          title="Eliminar permanentemente"
+        >
+          <i className="pi pi-times-circle"></i>
+        </button>
       </div>
     );
   };
 
   const deletedDateBody = (rowData: DeletedUser) => {
-    return new Date(rowData.deletedAt).toLocaleDateString('es-PE');
+    return new Date(rowData.deletedAt).toLocaleDateString('es-PE', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+  const roleBody = (rowData: DeletedUser) => {
+    return rowData.role === 'admin' ? (
+      <Tag value="Administrador" severity="success" className={styles.adminTag} />
+    ) : (
+      <Tag value="Usuario" severity="info" className={styles.userTag} />
+    );
   };
 
   const header = (
     <div className={styles.header}>
       <div className={styles.titleSection}>
+        <div className={styles.titleIcon}>
+          <i className="pi pi-trash"></i>
+        </div>
+        <div>
+          <h2>Papelera de Usuarios</h2>
+          <p className={styles.subtitle}>Usuarios eliminados recientemente</p>
+        </div>
         <Link href="/admin/users" className={styles.backLink}>
           <i className="pi pi-arrow-left"></i>
           Volver a Usuarios
         </Link>
-        <h2>Papelera de Usuarios</h2>
       </div>
       <div className={styles.searchSection}>
         <i className="pi pi-search"></i>
         <InputText
           type="search"
-          placeholder="Buscar..."
+          placeholder="Buscar usuario..."
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}
           className={styles.searchInput}
@@ -134,15 +156,16 @@ export default function TrashUsersPage() {
         globalFilter={globalFilter}
         header={header}
         paginator
-        rows={10}
+        rows={20}
         emptyMessage="No hay usuarios en la papelera"
         className={styles.table}
+        tableStyle={{ minWidth: '50rem' }}
       >
         <Column field="nombre" header="Nombre" sortable />
         <Column field="email" header="Email" sortable />
-        <Column field="role" header="Rol" body={(row) => <Tag value={row.role} />} />
-        <Column field="deletedAt" header="Fecha eliminación" body={deletedDateBody} sortable />
-        <Column body={actionBody} header="Acciones" style={{ width: '120px' }} />
+        <Column field="role" header="Rol" body={roleBody} style={{ width: '130px' }} />
+        <Column field="deletedAt" header="Fecha eliminación" body={deletedDateBody} sortable style={{ width: '180px' }} />
+        <Column body={actionBody} header="Acciones" style={{ width: '100px' }} />
       </DataTable>
     </div>
   );

@@ -22,16 +22,54 @@ export default function RegisterPage() {
   const { register } = useAuth();
   const router = useRouter();
 
+  // Validaciones de contraseña
+  const [passwordErrors, setPasswordErrors] = useState({
+    minLength: false,
+    uppercase: false,
+    lowercase: false,
+    number: false,
+    specialChar: false,
+  });
+
+  const validatePassword = (password: string) => {
+    setPasswordErrors({
+      minLength: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      number: /\d/.test(password),
+      specialChar: /[@$!%*?&]/.test(password),
+    });
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const password = e.target.value;
+    setFormData({ ...formData, password });
+    validatePassword(password);
+  };
+
+  const isPasswordValid = () => {
+    return (
+      passwordErrors.minLength &&
+      passwordErrors.uppercase &&
+      passwordErrors.lowercase &&
+      passwordErrors.number &&
+      passwordErrors.specialChar
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (formData.password !== formData.confirmPassword) {
       setError('Las contraseñas no coinciden');
       return;
     }
-    if (formData.password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres');
+    
+    if (!isPasswordValid()) {
+      setError('La contraseña no cumple con los requisitos');
       return;
     }
+
     setLoading(true);
     setError('');
     try {
@@ -118,7 +156,7 @@ export default function RegisterPage() {
                 id="password"
                 type="password"
                 value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                onChange={handlePasswordChange}
                 required
                 className={styles.input}
                 placeholder="••••••••"
@@ -138,6 +176,12 @@ export default function RegisterPage() {
                 className={styles.input}
                 placeholder="••••••••"
               />
+              {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                <div className={styles.passwordMismatch}>
+                  <i className="pi pi-times-circle"></i>
+                  Las contraseñas no coinciden
+                </div>
+              )}
             </div>
 
             <Button 
@@ -146,6 +190,7 @@ export default function RegisterPage() {
               icon="pi pi-user-plus" 
               loading={loading}
               className={styles.registerBtn}
+              disabled={!isPasswordValid()}
             />
 
             <Divider align="center" className={styles.divider}>

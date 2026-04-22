@@ -121,13 +121,6 @@ export default function AdminLayout({
           <div className={styles.userInfo}>
             <i className="pi pi-user"></i>
             <span>{user?.nombre}</span>
-            <Button
-              icon="pi pi-sign-out"
-              onClick={logout}
-              text
-              className={styles.headerLogout}
-              tooltip="Cerrar Sesión"
-            />
           </div>
         </div>
         <div className={styles.content}>

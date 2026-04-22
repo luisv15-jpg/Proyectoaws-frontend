@@ -12,6 +12,7 @@ import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import styles from './page.module.css';
+import { ColorPicker } from 'primereact/colorpicker';
 
 interface User {
   id: string;
@@ -168,8 +169,7 @@ export default function AdminUsersPage() {
         globalFilter={globalFilter}
         header={header}
         paginator
-        rows={10}
-        rowsPerPageOptions={[10, 25, 50]}
+        rows={20}
         emptyMessage="No hay usuarios registrados"
         className={styles.table}
         tableStyle={{ minWidth: '50rem' }}

@@ -4,6 +4,7 @@ export interface User {
   email: string;
   role: 'user' | 'admin';
   dni?: string;
+  avatar?: string;
   telefono?: string;
   direccion?: string;
   altura_cm?: number;
@@ -11,6 +12,8 @@ export interface User {
 }
 
 export interface Product {
+  createdAt: string | number | Date;
+  deletedAt: any;
   id: string;
   nombre: string;
   descripcion: string;

@@ -1,7 +1,60 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Importar AOS */
+@import 'aos/dist/aos.css';
 
+/* Estilos globales para animaciones AOS */
+[data-aos] {
+  pointer-events: none;
+}
+
+[data-aos].aos-animate {
+  pointer-events: auto;
+}
+
+/* Animaciones personalizadas */
+[data-aos="fade-up"] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+}
+
+[data-aos="fade-up"].aos-animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-aos="zoom-in"] {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.6s ease;
+}
+
+[data-aos="zoom-in"].aos-animate {
+  opacity: 1;
+  transform: scale(1);
+}
+
+[data-aos="fade-in"] {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+[data-aos="fade-in"].aos-animate {
+  opacity: 1;
+}
+
+[data-aos="flip-left"] {
+  opacity: 0;
+  transform: perspective(400px) rotateY(90deg);
+  transition: all 0.6s ease;
+}
+
+[data-aos="flip-left"].aos-animate {
+  opacity: 1;
+  transform: perspective(400px) rotateY(0);
+}
 /* Eliminar scroll horizontal y vertical no deseado */
 * {
   margin: 0;

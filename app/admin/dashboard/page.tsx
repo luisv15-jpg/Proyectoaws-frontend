@@ -303,7 +303,6 @@ export default function AdminDashboard() {
     { title: 'Pedidos', value: stats.total_orders, icon: 'pi pi-shopping-cart', color: '#f59e0b', bg: '#fffbeb' },
     { title: 'Ventas Totales', value: `S/ ${stats.total_sales.toFixed(2)}`, icon: 'pi pi-chart-line', color: '#c9a96e', bg: '#faf5eb' },
     { title: 'Pendientes', value: stats.pending_orders, icon: 'pi pi-clock', color: '#ef4444', bg: '#fef2f2' },
-    { title: 'Procesando', value: stats.processing_orders, icon: 'pi pi-spin pi-spinner', color: '#8b5cf6', bg: '#f5f3ff' },
   ];
 
   const orderStatusBody = (rowData: RecentOrder) => {

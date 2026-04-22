@@ -14,7 +14,6 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1.5rem;
   flex-wrap: wrap;
   gap: 1rem;
 }
@@ -24,6 +23,7 @@
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
+  margin-top: 20px;
 }
 
 .titleIcon {
@@ -36,6 +36,7 @@
   justify-content: center;
   color: #c9a96e;
   font-size: 1.4rem;
+  margin-left: 12px;
 }
 
 .titleSection h2 {
@@ -98,6 +99,8 @@
 ========================= */
 .searchSection {
   position: relative;
+  margin-top: 20px;
+  margin-right: 12px;
 }
 
 .searchSection i {
@@ -133,6 +136,40 @@
   overflow: hidden;
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.offerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.toggleOfferBtn {
+  background: transparent;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.3s ease;
+  color: #666;
+}
+
+.toggleOfferBtn:hover {
+  border-color: #c9a96e;
+  background: #faf5eb;
+  color: #c9a96e;
+}
+
+.fieldHint {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.7rem;
+  color: #999;
 }
 
 :global(.p-datatable) {
@@ -334,6 +371,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  margin-top: 10px;
 }
 
 .fieldLabel {

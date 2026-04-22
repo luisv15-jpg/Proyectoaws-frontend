@@ -1,8 +1,7 @@
 import AWS from 'aws-sdk';
 
-// Configurar AWS
 AWS.config.update({
-  region: process.env.NEXT_PUBLIC_AWS_REGION || 'us-east-1',
+  region: process.env.NEXT_PUBLIC_AWS_REGION,
   accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
 });
@@ -11,6 +10,18 @@ const s3 = new AWS.S3();
 
 export async function uploadToS3(file: File, folder: string = 'products'): Promise<string> {
   return new Promise((resolve, reject) => {
+    // Validar tipo de archivo
+    if (!file.type.startsWith('image/')) {
+      reject(new Error('Solo se permiten imágenes'));
+      return;
+    }
+
+    // Validar tamaño (máximo 2MB para avatar)
+    if (file.size > 2 * 1024 * 1024) {
+      reject(new Error('La imagen no puede superar los 2MB'));
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = async (e) => {
       const buffer = e.target?.result as ArrayBuffer;

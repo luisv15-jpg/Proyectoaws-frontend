@@ -382,3 +382,63 @@
     font-size: 1.5rem;
   }
 }
+
+/* Password requirements */
+.passwordRequirements {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.requirementsTitle {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #666;
+  margin: 0 0 0.5rem;
+}
+
+.requirementsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.requirementsList li {
+  font-size: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.valid {
+  color: #10b981;
+}
+
+.invalid {
+  color: #dc2626;
+}
+
+.valid i, .invalid i {
+  font-size: 0.7rem;
+}
+
+.passwordMismatch {
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .requirementsList {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}

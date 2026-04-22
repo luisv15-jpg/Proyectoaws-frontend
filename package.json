@@ -13,6 +13,7 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@stripe/react-stripe-js": "^6.2.0",
     "@stripe/stripe-js": "^9.2.0",
+    "aos": "^2.3.4",
     "aws-sdk": "^2.1693.0",
     "axios": "^1.15.0",
     "chart.js": "^4.5.1",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/aos": "^3.0.7",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

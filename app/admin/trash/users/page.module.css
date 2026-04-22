@@ -1,0 +1,243 @@
+.container {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 20px;
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.titleIcon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c9a96e;
+  font-size: 1.4rem;
+  margin-left: 12px;
+}
+
+.titleSection h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* Botón volver */
+.backLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f0f0f0;
+  color: #666;
+  padding: 0.5rem 1rem;
+  border-radius: 40px;
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.backLink:hover {
+  background: #c9a96e;
+  color: #1a1a1a;
+}
+
+/* Buscador */
+.searchSection {
+  position: relative;
+  margin-right: 12px;
+}
+
+.searchSection i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 0.9rem;
+  z-index: 1;
+}
+
+.searchInput {
+  padding: 0.7rem 1rem 0.7rem 2.5rem !important;
+  border-radius: 40px !important;
+  border: 1px solid #e0e0e0 !important;
+  background: white !important;
+  width: 280px;
+  transition: all 0.3s ease !important;
+}
+
+.searchInput:focus {
+  border-color: #c9a96e !important;
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.2) !important;
+  outline: none;
+}
+
+/* Tabla */
+.table {
+  border-radius: 20px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+:global(.p-datatable) {
+  border: none !important;
+}
+
+:global(.p-datatable-thead > tr > th) {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #888;
+  font-weight: 600;
+  border-bottom: 1px solid #f0f0f0 !important;
+  background: #fafafa !important;
+  padding: 1rem 0.75rem !important;
+}
+
+:global(.p-datatable-tbody > tr) {
+  transition: all 0.2s ease;
+}
+
+:global(.p-datatable-tbody > tr:hover) {
+  background: rgba(201, 169, 110, 0.04) !important;
+}
+
+:global(.p-datatable-tbody > tr > td) {
+  padding: 0.9rem 0.75rem;
+  border-bottom: 1px solid #f5f5f5 !important;
+}
+
+/* Tags */
+.adminTag {
+  background: #1a1a1a !important;
+  color: #c9a96e !important;
+  border: none !important;
+  font-weight: 500 !important;
+}
+
+.userTag {
+  background: #eef2ff !important;
+  color: #3b82f6 !important;
+  border: none !important;
+  font-weight: 500 !important;
+}
+
+/* Paginador */
+:global(.p-paginator) {
+  border: none !important;
+  margin-top: 1rem;
+  background: transparent !important;
+}
+
+:global(.p-paginator .p-paginator-page) {
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+}
+
+:global(.p-paginator .p-highlight) {
+  background: #1a1a1a !important;
+  color: #c9a96e !important;
+}
+
+:global(.p-paginator button:hover) {
+  background: rgba(201, 169, 110, 0.1) !important;
+}
+
+/* Botones de acción */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.restoreBtn {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #888;
+}
+
+.restoreBtn:hover {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.deleteBtn {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #888;
+}
+
+.deleteBtn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .titleSection {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .searchSection {
+    width: 100%;
+  }
+  
+  .searchInput {
+    width: 100%;
+  }
+}

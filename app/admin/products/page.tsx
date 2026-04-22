@@ -5,6 +5,7 @@ import api from '@/lib/api';
 import { Product } from '@/types';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Dialog } from 'primereact/dialog';
@@ -12,38 +13,78 @@ import { Tag } from 'primereact/tag';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
+import MultiImageUpload from '@/components/admin/MultiImageUpload';
 import styles from './page.module.css';
-import ImageUpload from '@/components/admin/ImageUpload';
+
+interface ProductItem {
+  id: string;
+  nombre: string;
+  descripcion: string | null;
+  precio: string;
+  precio_oferta: string | null;
+  stock: number;
+  categoria: string;
+  subcategoria: string | null;
+  imagen_principal: string | null;
+  imagenes: string[] | null;
+  tallas: string[] | null;
+  colores: string[] | null;
+  activo: boolean;
+  deletedAt: string | null;
+  createdAt: string;
+}
 
 export default function AdminProductsPage() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [globalFilter, setGlobalFilter] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [editDialogVisible, setEditDialogVisible] = useState(false);
   const [createDialogVisible, setCreateDialogVisible] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [hasOffer, setHasOffer] = useState(false);
+  const [hasOfferEdit, setHasOfferEdit] = useState(false);
 
   const [createForm, setCreateForm] = useState({
     nombre: '',
     descripcion: '',
     precio: '',
+    precio_oferta: '',
     stock: 0,
     categoria: '',
     subcategoria: '',
-    imagen_principal: '',
+    imagenes: [] as string[],
     tallas: '',
     colores: '',
   });
+
+  const openCreateDialog = () => {
+    setCreateForm({
+      nombre: '',
+      descripcion: '',
+      precio: '',
+      precio_oferta: '',
+      stock: 0,
+      categoria: '',
+      subcategoria: '',
+      imagenes: [],
+      tallas: '',
+      colores: '',
+    });
+    setHasOffer(false);
+    setImagePreview(null);
+    setCreateDialogVisible(true);
+  };
 
   const [editForm, setEditForm] = useState({
     nombre: '',
     descripcion: '',
     precio: '',
+    precio_oferta: '',
     stock: 0,
     categoria: '',
     subcategoria: '',
-    imagen_principal: '',
+    imagenes: [] as string[],
     tallas: '',
     colores: '',
   });
@@ -72,14 +113,27 @@ export default function AdminProductsPage() {
     }
 
     try {
+      const precioNum = parseFloat(createForm.precio);
+      let precioOfertaNum = null;
+
+      if (hasOffer && createForm.precio_oferta) {
+        precioOfertaNum = parseFloat(createForm.precio_oferta);
+        if (precioOfertaNum >= precioNum) {
+          toast.error('El precio de oferta debe ser menor al precio original');
+          return;
+        }
+      }
+
       const productData = {
         nombre: createForm.nombre,
         descripcion: createForm.descripcion || undefined,
-        precio: parseFloat(createForm.precio),
+        precio: precioNum,
+        precio_oferta: hasOffer && precioOfertaNum ? precioOfertaNum : undefined,
         stock: createForm.stock,
         categoria: createForm.categoria,
         subcategoria: createForm.subcategoria || undefined,
-        imagen_principal: createForm.imagen_principal || undefined,
+        imagenes: createForm.imagenes,
+        imagen_principal: createForm.imagenes[0] || undefined,
         tallas: createForm.tallas ? createForm.tallas.split(',').map(t => t.trim()) : [],
         colores: createForm.colores ? createForm.colores.split(',').map(c => c.trim()) : [],
       };
@@ -91,13 +145,15 @@ export default function AdminProductsPage() {
         nombre: '',
         descripcion: '',
         precio: '',
+        precio_oferta: '',
         stock: 0,
         categoria: '',
         subcategoria: '',
-        imagen_principal: '',
+        imagenes: [],
         tallas: '',
         colores: '',
       });
+      setHasOffer(false);
       setImagePreview(null);
       fetchProducts();
     } catch (error: any) {
@@ -105,16 +161,19 @@ export default function AdminProductsPage() {
     }
   };
 
-  const handleEditProduct = (product: Product) => {
+  const handleEditProduct = (product: ProductItem) => {
     setSelectedProduct(product);
+    const hasOfferValue = product.precio_oferta && parseFloat(product.precio_oferta) > 0;
+    setHasOfferEdit(hasOfferValue);
     setEditForm({
       nombre: product.nombre,
       descripcion: product.descripcion || '',
-      precio: product.precio.toString(),
+      precio: product.precio,
+      precio_oferta: product.precio_oferta || '',
       stock: product.stock,
       categoria: product.categoria,
       subcategoria: product.subcategoria || '',
-      imagen_principal: product.imagen_principal || '',
+      imagenes: product.imagenes || [],
       tallas: product.tallas?.join(', ') || '',
       colores: product.colores?.join(', ') || '',
     });
@@ -124,14 +183,27 @@ export default function AdminProductsPage() {
 
   const handleUpdateProduct = async () => {
     try {
+      const precioNum = parseFloat(editForm.precio);
+      let precioOfertaNum = null;
+
+      if (hasOfferEdit && editForm.precio_oferta) {
+        precioOfertaNum = parseFloat(editForm.precio_oferta);
+        if (precioOfertaNum >= precioNum) {
+          toast.error('El precio de oferta debe ser menor al precio original');
+          return;
+        }
+      }
+
       const productData = {
         nombre: editForm.nombre,
         descripcion: editForm.descripcion || undefined,
-        precio: parseFloat(editForm.precio),
+        precio: precioNum,
+        precio_oferta: hasOfferEdit && precioOfertaNum ? precioOfertaNum : undefined,
         stock: editForm.stock,
         categoria: editForm.categoria,
         subcategoria: editForm.subcategoria || undefined,
-        imagen_principal: editForm.imagen_principal || undefined,
+        imagenes: editForm.imagenes,
+        imagen_principal: editForm.imagenes[0] || undefined,
         tallas: editForm.tallas ? editForm.tallas.split(',').map(t => t.trim()) : [],
         colores: editForm.colores ? editForm.colores.split(',').map(c => c.trim()) : [],
       };
@@ -145,7 +217,7 @@ export default function AdminProductsPage() {
     }
   };
 
-  const handleDeleteProduct = (product: Product) => {
+  const handleDeleteProduct = (product: ProductItem) => {
     confirmDialog({
       message: `¿Mover "${product.nombre}" a la papelera?`,
       header: 'Confirmar',
@@ -165,7 +237,7 @@ export default function AdminProductsPage() {
     });
   };
 
-  const handleRestoreProduct = (product: Product) => {
+  const handleRestoreProduct = (product: ProductItem) => {
     confirmDialog({
       message: `¿Restaurar "${product.nombre}"?`,
       header: 'Confirmar restauración',
@@ -184,18 +256,28 @@ export default function AdminProductsPage() {
     });
   };
 
-  const stockBody = (rowData: Product) => {
+  const stockBody = (rowData: ProductItem) => {
     const stock = rowData.stock;
     if (stock === 0) return <Tag value="Agotado" severity="danger" className={styles.stockTag} />;
     if (stock < 10) return <Tag value={`Stock bajo: ${stock}`} severity="warning" className={styles.stockTagWarning} />;
     return <Tag value={stock} severity="info" className={styles.stockTagOk} />;
   };
 
-  const priceBody = (rowData: Product) => {
-    return `S/ ${parseFloat(rowData.precio as string).toFixed(2)}`;
+  const priceBody = (rowData: ProductItem) => {
+    const hasOffer = rowData.precio_oferta && parseFloat(rowData.precio_oferta) > 0;
+    return (
+      <div className={styles.priceCell}>
+        {hasOffer && (
+          <span className={styles.originalPrice}>S/ {parseFloat(rowData.precio).toFixed(2)}</span>
+        )}
+        <span className={hasOffer ? styles.offerPrice : styles.normalPrice}>
+          S/ {hasOffer ? parseFloat(rowData.precio_oferta!).toFixed(2) : parseFloat(rowData.precio).toFixed(2)}
+        </span>
+      </div>
+    );
   };
 
-  const statusBody = (rowData: Product) => {
+  const statusBody = (rowData: ProductItem) => {
     if (rowData.deletedAt) {
       return <Tag value="Eliminado" severity="danger" className={styles.statusTag} />;
     }
@@ -206,28 +288,7 @@ export default function AdminProductsPage() {
     );
   };
 
-  const imageBody = (rowData: Product) => {
-    if (!rowData.imagen_principal) {
-      return <div className={styles.imagePlaceholder}><i className="pi pi-image"></i></div>;
-    }
-    return (
-      <img
-        src={rowData.imagen_principal}
-        alt={rowData.nombre}
-        className={styles.productImage}
-      />
-    );
-  };
-
-  const dateBody = (rowData: Product) => {
-    return new Date(rowData.createdAt).toLocaleDateString('es-PE', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    });
-  };
-
-  const actionBody = (rowData: Product) => {
+  const actionBody = (rowData: ProductItem) => {
     return (
       <div className={styles.actions}>
         <button
@@ -309,18 +370,16 @@ export default function AdminProductsPage() {
         globalFilter={globalFilter}
         header={header}
         paginator
-        rows={10}
-        rowsPerPageOptions={[10, 25, 50]}
+        rows={20}
         emptyMessage="No hay productos registrados"
         className={styles.table}
         tableStyle={{ minWidth: '70rem' }}
       >
         <Column field="nombre" header="Producto" sortable />
         <Column field="categoria" header="Categoría" sortable style={{ width: '130px' }} />
-        <Column field="precio" header="Precio" body={priceBody} sortable style={{ width: '100px' }} />
+        <Column field="precio" header="Precio" body={priceBody} sortable style={{ width: '130px' }} />
         <Column field="stock" header="Stock" body={stockBody} sortable style={{ width: '120px' }} />
         <Column field="activo" header="Estado" body={statusBody} sortable style={{ width: '110px' }} />
-        <Column field="createdAt" header="Registro" body={dateBody} sortable style={{ width: '110px' }} />
         <Column body={actionBody} header="Acciones" style={{ width: '100px' }} />
       </DataTable>
 
@@ -328,10 +387,11 @@ export default function AdminProductsPage() {
       <Dialog
         header="Nuevo Producto"
         visible={createDialogVisible}
-        style={{ width: '550px' }}
+        style={{ width: '600px' }}
         onHide={() => {
           setCreateDialogVisible(false);
           setImagePreview(null);
+          setHasOffer(false);
         }}
         draggable={false}
         className={styles.productDialog}
@@ -364,80 +424,110 @@ export default function AdminProductsPage() {
             />
           </div>
 
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>
-              <i className="pi pi-dollar"></i>
-              Precio *
-            </label>
-            <InputText
-              value={createForm.precio}
-              onChange={(e) => setCreateForm({ ...createForm, precio: e.target.value })}
-              className={styles.fieldInput}
-              placeholder="0.00"
-            />
+          <div className={styles.formRow}>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>
+                <i className="pi pi-dollar"></i>
+                Precio regular *
+              </label>
+              <InputText
+                value={createForm.precio}
+                onChange={(e) => setCreateForm({ ...createForm, precio: e.target.value })}
+                className={styles.fieldInput}
+                placeholder="0.00"
+              />
+            </div>
+            <div className={styles.field}>
+              <div className={styles.offerHeader}>
+                <label className={styles.fieldLabel}>
+                  <i className="pi pi-percentage"></i>
+                  Precio de oferta
+                </label>
+                <button
+                  type="button"
+                  className={styles.toggleOfferBtn}
+                  onClick={() => setHasOffer(!hasOffer)}
+                >
+                  {hasOffer ? (
+                    <>
+                      <i className="pi pi-times"></i>
+                      Quitar oferta
+                    </>
+                  ) : (
+                    <>
+                      <i className="pi pi-plus"></i>
+                      Agregar oferta
+                    </>
+                  )}
+                </button>
+              </div>
+              {hasOffer && (
+                <InputText
+                  value={createForm.precio_oferta}
+                  onChange={(e) => setCreateForm({ ...createForm, precio_oferta: e.target.value })}
+                  className={styles.fieldInput}
+                  placeholder="0.00"
+                />
+              )}
+              {hasOffer && (
+                <small className={styles.fieldHint}>Debe ser menor al precio regular</small>
+              )}
+            </div>
           </div>
 
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>
-              <i className="pi pi-box"></i>
-              Stock
-            </label>
-            <InputText
-              type="number"
-              value={createForm.stock}
-              onChange={(e) => setCreateForm({ ...createForm, stock: parseInt(e.target.value) || 0 })}
-              className={styles.fieldInput}
-              placeholder="0"
-            />
+          <div className={styles.formRow}>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>
+                <i className="pi pi-box"></i>
+                Stock *
+              </label>
+              <InputText
+                type="number"
+                value={createForm.stock}
+                onChange={(e) => setCreateForm({ ...createForm, stock: parseInt(e.target.value) || 0 })}
+                className={styles.fieldInput}
+                placeholder="0"
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>
+                <i className="pi pi-list"></i>
+                Categoría *
+              </label>
+              <InputText
+                value={createForm.categoria}
+                onChange={(e) => setCreateForm({ ...createForm, categoria: e.target.value })}
+                className={styles.fieldInput}
+                placeholder="Ej: Poleras, Pantalones"
+              />
+            </div>
           </div>
 
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>
-              <i className="pi pi-list"></i>
-              Categoría *
-            </label>
-            <InputText
-              value={createForm.categoria}
-              onChange={(e) => setCreateForm({ ...createForm, categoria: e.target.value })}
-              className={styles.fieldInput}
-              placeholder="Ej: Poleras, Pantalones, Zapatos"
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>
-              <i className="pi pi-sitemap"></i>
-              Subcategoría
-            </label>
-            <InputText
-              value={createForm.subcategoria}
-              onChange={(e) => setCreateForm({ ...createForm, subcategoria: e.target.value })}
-              className={styles.fieldInput}
-              placeholder="Ej: Oversize, Jeans, Deportivo"
-            />
-          </div>
-
-          <div className={styles.field}>
-            <ImageUpload
-              onImageUploaded={(url) => {
-                setCreateForm({ ...createForm, imagen_principal: url });
-              }}
-              currentImage={createForm.imagen_principal}
-              label="Imagen del producto"
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>
-              <i className="pi pi-tag"></i>
-              Tallas (separadas por coma)
-            </label>
-            <InputText
-              value={createForm.tallas}
-              onChange={(e) => setCreateForm({ ...createForm, tallas: e.target.value })}
-              className={styles.fieldInput}
-              placeholder="S, M, L, XL"
-            />
+          <div className={styles.formRow}>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>
+                <i className="pi pi-sitemap"></i>
+                Subcategoría
+              </label>
+              <InputText
+                value={createForm.subcategoria}
+                onChange={(e) => setCreateForm({ ...createForm, subcategoria: e.target.value })}
+                className={styles.fieldInput}
+                placeholder="Ej: Oversize, Jeans"
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>
+                <i className="pi pi-tag"></i>
+                Tallas (separadas por coma)
+              </label>
+              <InputText
+                value={createForm.tallas}
+                onChange={(e) => setCreateForm({ ...createForm, tallas: e.target.value })}
+                className={styles.fieldInput}
+                placeholder="S, M, L, XL"
+              />
+            </div>
           </div>
 
           <div className={styles.field}>
@@ -450,6 +540,16 @@ export default function AdminProductsPage() {
               onChange={(e) => setCreateForm({ ...createForm, colores: e.target.value })}
               className={styles.fieldInput}
               placeholder="Negro, Blanco, Azul"
+            />
+          </div>
+
+          <div className={styles.field}>
+            <MultiImageUpload
+              onImagesUploaded={(urls) => {
+                setCreateForm({ ...createForm, imagenes: urls });
+              }}
+              currentImages={createForm.imagenes}
+              label="Imágenes del producto"
             />
           </div>
 
@@ -480,10 +580,11 @@ export default function AdminProductsPage() {
       <Dialog
         header="Editar Producto"
         visible={editDialogVisible}
-        style={{ width: '550px' }}
+        style={{ width: '600px' }}
         onHide={() => {
           setEditDialogVisible(false);
           setImagePreview(null);
+          setHasOfferEdit(false);
         }}
         draggable={false}
         className={styles.productDialog}
@@ -514,87 +615,125 @@ export default function AdminProductsPage() {
             />
           </div>
 
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>
-              <i className="pi pi-dollar"></i>
-              Precio
-            </label>
-            <InputText
-              value={editForm.precio}
-              onChange={(e) => setEditForm({ ...editForm, precio: e.target.value })}
-              className={styles.fieldInput}
-            />
+          <div className={styles.formRow}>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>
+                <i className="pi pi-dollar"></i>
+                Precio regular
+              </label>
+              <InputText
+                value={editForm.precio}
+                onChange={(e) => setEditForm({ ...editForm, precio: e.target.value })}
+                className={styles.fieldInput}
+              />
+            </div>
+            <div className={styles.field}>
+              <div className={styles.offerHeader}>
+                <label className={styles.fieldLabel}>
+                  <i className="pi pi-percentage"></i>
+                  Precio de oferta
+                </label>
+                <button
+                  type="button"
+                  className={styles.toggleOfferBtn}
+                  onClick={() => setHasOfferEdit(!hasOfferEdit)}
+                >
+                  {hasOfferEdit ? (
+                    <>
+                      <i className="pi pi-times"></i>
+                      Quitar oferta
+                    </>
+                  ) : (
+                    <>
+                      <i className="pi pi-plus"></i>
+                      Agregar oferta
+                    </>
+                  )}
+                </button>
+              </div>
+              {hasOfferEdit && (
+                <InputText
+                  value={editForm.precio_oferta}
+                  onChange={(e) => setEditForm({ ...editForm, precio_oferta: e.target.value })}
+                  className={styles.fieldInput}
+                />
+              )}
+              {hasOfferEdit && (
+                <small className={styles.fieldHint}>Debe ser menor al precio regular</small>
+              )}
+            </div>
           </div>
 
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>
-              <i className="pi pi-box"></i>
-              Stock
-            </label>
-            <InputText
-              type="number"
-              value={editForm.stock}
-              onChange={(e) => setEditForm({ ...editForm, stock: parseInt(e.target.value) || 0 })}
-              className={styles.fieldInput}
-            />
+          <div className={styles.formRow}>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>
+                <i className="pi pi-box"></i>
+                Stock
+              </label>
+              <InputText
+                type="number"
+                value={editForm.stock}
+                onChange={(e) => setEditForm({ ...editForm, stock: parseInt(e.target.value) || 0 })}
+                className={styles.fieldInput}
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>
+                <i className="pi pi-list"></i>
+                Categoría
+              </label>
+              <InputText
+                value={editForm.categoria}
+                onChange={(e) => setEditForm({ ...editForm, categoria: e.target.value })}
+                className={styles.fieldInput}
+              />
+            </div>
           </div>
 
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>
-              <i className="pi pi-list"></i>
-              Categoría
-            </label>
-            <InputText
-              value={editForm.categoria}
-              onChange={(e) => setEditForm({ ...editForm, categoria: e.target.value })}
-              className={styles.fieldInput}
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>
-              <i className="pi pi-sitemap"></i>
-              Subcategoría
-            </label>
-            <InputText
-              value={editForm.subcategoria}
-              onChange={(e) => setEditForm({ ...editForm, subcategoria: e.target.value })}
-              className={styles.fieldInput}
-            />
-          </div>
-
-          <div className={styles.field}>
-            <ImageUpload
-              onImageUploaded={(url) => {
-                setEditForm({ ...editForm, imagen_principal: url });
-                setImagePreview(url);
-              }}
-              currentImage={editForm.imagen_principal}
-              label="Imagen del producto"
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>
-              <i className="pi pi-tag"></i>
-              Tallas (separadas por coma)
-            </label>
-            <InputText
-              value={editForm.tallas}
-              onChange={(e) => setEditForm({ ...editForm, tallas: e.target.value })}
-              className={styles.fieldInput}
-            />
+          <div className={styles.formRow}>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>
+                <i className="pi pi-sitemap"></i>
+                Subcategoría
+              </label>
+              <InputText
+                value={editForm.subcategoria}
+                onChange={(e) => setEditForm({ ...editForm, subcategoria: e.target.value })}
+                className={styles.fieldInput}
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>
+                <i className="pi pi-tag"></i>
+                Tallas
+              </label>
+              <InputText
+                value={editForm.tallas}
+                onChange={(e) => setEditForm({ ...editForm, tallas: e.target.value })}
+                className={styles.fieldInput}
+              />
+            </div>
           </div>
 
           <div className={styles.field}>
             <label className={styles.fieldLabel}>
               <i className="pi pi-palette"></i>
-              Colores (separados por coma)
+              Colores
             </label>
             <InputText
               value={editForm.colores}
               onChange={(e) => setEditForm({ ...editForm, colores: e.target.value })}
               className={styles.fieldInput}
+            />
+          </div>
+
+          <div className={styles.field}>
+            <MultiImageUpload
+              onImagesUploaded={(urls) => {
+                setEditForm({ ...editForm, imagenes: urls });
+              }}
+              currentImages={editForm.imagenes}
+              label="Imágenes del producto"
             />
           </div>
 
