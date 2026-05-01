@@ -12,6 +12,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (data: any) => Promise<void>;
   logout: () => void;
+  refreshUser: () => Promise<void>;
   isAdmin: boolean;
 }
 
@@ -73,10 +74,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     toast.success('Sesión cerrada');
   };
 
+  const refreshUser = async () => {
+  try {
+    const res = await api.get('users/profile/me');
+    setUser(res.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
   const isAdmin = user?.role === 'admin';
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, isAdmin }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, isAdmin, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

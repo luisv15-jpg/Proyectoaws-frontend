@@ -66,6 +66,139 @@
   color: #1a1a1a;
 }
 
+/* =========================
+   CONFIRM DIALOG PERSONALIZADO
+========================= */
+.customConfirmDialog :global(.p-dialog) {
+  border-radius: 20px !important;
+  max-width: 420px !important;
+  overflow: hidden;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.15) !important;
+}
+
+.customConfirmDialog :global(.p-dialog-header) {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: #c9a96e;
+  padding: 1rem 1.5rem !important;
+  border-bottom: 1px solid #333;
+}
+
+.customConfirmDialog :global(.p-dialog-header-icon) {
+  color: #888;
+}
+
+.customConfirmDialog :global(.p-dialog-header-icon:hover) {
+  color: #c9a96e;
+}
+
+.customConfirmDialog :global(.p-dialog-content) {
+  padding: 1.5rem !important;
+  background: #f8f9fa;
+}
+
+.customConfirmDialog :global(.p-dialog-footer) {
+  padding: 1rem 1.5rem !important;
+  background: white;
+  border-top: 1px solid #eaeaea;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+/* Mensaje de confirmación */
+.confirmMessage {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.confirmIcon {
+  flex-shrink: 0;
+}
+
+.confirmIcon i {
+  font-size: 2rem;
+}
+
+.confirmText strong {
+  display: block;
+  font-size: 1rem;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+  word-break: break-word;
+}
+
+.confirmText p {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Header del confirm */
+.confirmHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.confirmHeader i {
+  font-size: 1.2rem;
+}
+
+/* Botones */
+.customConfirmDialog :global(.p-button.p-button-secondary) {
+  background: transparent !important;
+  border: 1px solid #ddd !important;
+  color: #666 !important;
+  padding: 0.5rem 1.2rem !important;
+  border-radius: 10px !important;
+  transition: all 0.3s ease !important;
+}
+
+.customConfirmDialog :global(.p-button.p-button-secondary:hover) {
+  background: #f5f5f5 !important;
+  border-color: #c9a96e !important;
+  color: #c9a96e !important;
+}
+
+.customConfirmDialog :global(.p-button.p-button-success) {
+  background: #10b981 !important;
+  border: none !important;
+  color: white !important;
+  padding: 0.5rem 1.2rem !important;
+  border-radius: 10px !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.customConfirmDialog :global(.p-button.p-button-success:hover) {
+  background: #059669 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.customConfirmDialog :global(.p-button.p-button-danger) {
+  background: #dc2626 !important;
+  border: none !important;
+  color: white !important;
+  padding: 0.5rem 1.2rem !important;
+  border-radius: 10px !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.customConfirmDialog :global(.p-button.p-button-danger:hover) {
+  background: #b91c1c !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
 /* Buscador */
 .searchSection {
   position: relative;

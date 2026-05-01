@@ -116,24 +116,32 @@ export default function AdminProductsPage() {
       const precioNum = parseFloat(createForm.precio);
       let precioOfertaNum = null;
 
-      if (hasOffer && createForm.precio_oferta) {
+      if (hasOffer && createForm.precio_oferta && createForm.precio_oferta.trim() !== '') {
         precioOfertaNum = parseFloat(createForm.precio_oferta);
+        if (isNaN(precioOfertaNum)) {
+          toast.error('El precio de oferta no es válido');
+          return;
+        }
         if (precioOfertaNum >= precioNum) {
           toast.error('El precio de oferta debe ser menor al precio original');
           return;
         }
       }
 
+      const primeraImagen = createForm.imagenes.length > 0 ? createForm.imagenes[0] : undefined;
+
+      const restoImagenes = createForm.imagenes.length > 1 ? createForm.imagenes.slice(1) : [];
+
       const productData = {
         nombre: createForm.nombre,
         descripcion: createForm.descripcion || undefined,
         precio: precioNum,
-        precio_oferta: hasOffer && precioOfertaNum ? precioOfertaNum : undefined,
+        precio_oferta: hasOffer && precioOfertaNum ? precioOfertaNum : null,
         stock: createForm.stock,
         categoria: createForm.categoria,
         subcategoria: createForm.subcategoria || undefined,
-        imagenes: createForm.imagenes,
-        imagen_principal: createForm.imagenes[0] || undefined,
+        imagen_principal: primeraImagen,  
+        imagenes: restoImagenes,          
         tallas: createForm.tallas ? createForm.tallas.split(',').map(t => t.trim()) : [],
         colores: createForm.colores ? createForm.colores.split(',').map(c => c.trim()) : [],
       };
@@ -164,7 +172,7 @@ export default function AdminProductsPage() {
   const handleEditProduct = (product: ProductItem) => {
     setSelectedProduct(product);
     const hasOfferValue = product.precio_oferta && parseFloat(product.precio_oferta) > 0;
-    setHasOfferEdit(hasOfferValue);
+    setHasOfferEdit(hasOfferValue || false);
     setEditForm({
       nombre: product.nombre,
       descripcion: product.descripcion || '',
@@ -186,24 +194,32 @@ export default function AdminProductsPage() {
       const precioNum = parseFloat(editForm.precio);
       let precioOfertaNum = null;
 
-      if (hasOfferEdit && editForm.precio_oferta) {
+      if (hasOfferEdit && editForm.precio_oferta && editForm.precio_oferta.trim() !== '') {
         precioOfertaNum = parseFloat(editForm.precio_oferta);
+        if (isNaN(precioOfertaNum)) {
+          toast.error('El precio de oferta no es válido');
+          return;
+        }
         if (precioOfertaNum >= precioNum) {
           toast.error('El precio de oferta debe ser menor al precio original');
           return;
         }
       }
 
+      const primeraImagen = editForm.imagenes.length > 0 ? editForm.imagenes[0] : undefined;
+
+      const restoImagenes = editForm.imagenes.length > 1 ? editForm.imagenes.slice(1) : [];
+
       const productData = {
         nombre: editForm.nombre,
         descripcion: editForm.descripcion || undefined,
         precio: precioNum,
-        precio_oferta: hasOfferEdit && precioOfertaNum ? precioOfertaNum : undefined,
+        precio_oferta: hasOfferEdit && precioOfertaNum ? precioOfertaNum : null,
         stock: editForm.stock,
         categoria: editForm.categoria,
         subcategoria: editForm.subcategoria || undefined,
-        imagenes: editForm.imagenes,
-        imagen_principal: editForm.imagenes[0] || undefined,
+        imagen_principal: primeraImagen,
+        imagenes: restoImagenes,
         tallas: editForm.tallas ? editForm.tallas.split(',').map(t => t.trim()) : [],
         colores: editForm.colores ? editForm.colores.split(',').map(c => c.trim()) : [],
       };
@@ -219,12 +235,30 @@ export default function AdminProductsPage() {
 
   const handleDeleteProduct = (product: ProductItem) => {
     confirmDialog({
-      message: `¿Mover "${product.nombre}" a la papelera?`,
-      header: 'Confirmar',
-      icon: 'pi pi-exclamation-triangle',
+      message: (
+        <div className={styles.confirmMessage}>
+          <div className={styles.confirmIcon}>
+            <i className="pi pi-exclamation-triangle"></i>
+          </div>
+          <div className={styles.confirmText}>
+            <strong>¿Mover "{product.nombre}" a la papelera?</strong>
+            <p>El producto será desactivado y podrá ser restaurado desde la papelera.</p>
+          </div>
+        </div>
+      ),
+      header: (
+        <div className={styles.confirmHeader}>
+          <i className="pi pi-trash"></i>
+          <span>Confirmar eliminación</span>
+        </div>
+      ),
       acceptLabel: 'Sí, mover',
       rejectLabel: 'Cancelar',
       acceptClassName: 'p-button-danger',
+      rejectClassName: 'p-button-secondary',
+      className: styles.customConfirmDialog,
+      acceptIcon: 'pi pi-check',
+      rejectIcon: 'pi pi-times',
       accept: async () => {
         try {
           await api.patch(`/products/${product.id}/soft-delete`);
@@ -483,7 +517,7 @@ export default function AdminProductsPage() {
               </label>
               <InputText
                 type="number"
-                value={createForm.stock}
+                value={createForm.stock.toString()}
                 onChange={(e) => setCreateForm({ ...createForm, stock: parseInt(e.target.value) || 0 })}
                 className={styles.fieldInput}
                 placeholder="0"
@@ -672,7 +706,7 @@ export default function AdminProductsPage() {
               </label>
               <InputText
                 type="number"
-                value={editForm.stock}
+                value={editForm.stock.toString()}
                 onChange={(e) => setEditForm({ ...editForm, stock: parseInt(e.target.value) || 0 })}
                 className={styles.fieldInput}
               />

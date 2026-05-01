@@ -103,7 +103,7 @@ export default function AdminOrdersPage() {
   const saveStatus = async () => {
     if (!selectedOrder) return;
     if (newStatus === selectedOrder.estado) {
-      toast.info('El estado no ha cambiado');
+      toast('El estado no ha cambiado');
       return;
     }
 

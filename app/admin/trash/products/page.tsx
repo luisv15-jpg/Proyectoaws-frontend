@@ -44,11 +44,30 @@ export default function TrashProductsPage() {
 
   const handleRestore = (product: DeletedProduct) => {
     confirmDialog({
-      message: `¿Restaurar "${product.nombre}"?`,
-      header: 'Confirmar restauración',
-      icon: 'pi pi-refresh',
+      message: (
+        <div className={styles.confirmMessage}>
+          <div className={styles.confirmIcon}>
+            <i className="pi pi-refresh"></i>
+          </div>
+          <div className={styles.confirmText}>
+            <strong>¿Restaurar "{product.nombre}"?</strong>
+            <p>El producto volverá a estar disponible en la tienda.</p>
+          </div>
+        </div>
+      ),
+      header: (
+        <div className={styles.confirmHeader}>
+          <i className="pi pi-refresh"></i>
+          <span>Confirmar restauración</span>
+        </div>
+      ),
       acceptLabel: 'Sí, restaurar',
+      rejectLabel: 'Cancelar',
       acceptClassName: 'p-button-success',
+      rejectClassName: 'p-button-secondary',
+      className: styles.customConfirmDialog,
+      acceptIcon: 'pi pi-check',
+      rejectIcon: 'pi pi-times',
       accept: async () => {
         try {
           await api.patch(`/products/${product.id}/restore`);
@@ -56,25 +75,6 @@ export default function TrashProductsPage() {
           fetchDeletedProducts();
         } catch (error) {
           toast.error('Error al restaurar');
-        }
-      }
-    });
-  };
-
-  const handlePermanentDelete = (product: DeletedProduct) => {
-    confirmDialog({
-      message: `¿Eliminar permanentemente "${product.nombre}"? Esta acción no se puede deshacer.`,
-      header: 'Eliminación permanente',
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Sí, eliminar',
-      acceptClassName: 'p-button-danger',
-      accept: async () => {
-        try {
-          await api.delete(`/products/${product.id}`);
-          toast.success('Producto eliminado permanentemente');
-          fetchDeletedProducts();
-        } catch (error) {
-          toast.error('Error al eliminar');
         }
       }
     });
@@ -89,13 +89,6 @@ export default function TrashProductsPage() {
           title="Restaurar producto"
         >
           <i className="pi pi-refresh"></i>
-        </button>
-        <button
-          className={styles.deleteBtn}
-          onClick={() => handlePermanentDelete(rowData)}
-          title="Eliminar permanentemente"
-        >
-          <i className="pi pi-times-circle"></i>
         </button>
       </div>
     );

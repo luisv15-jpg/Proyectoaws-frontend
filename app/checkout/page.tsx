@@ -32,12 +32,12 @@ interface PaymentMethod {
 }
 
 export default function CheckoutPage() {
-  const { user } = useAuth();
-  const { items, total, loading, clearCart } = useCart();
+  const { user, loading, refreshUser } = useAuth();
+  const { items, total, loading: cartLoading, clearCart } = useCart();
   const router = useRouter();
-
   const [step, setStep] = useState(1);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [isReloading, setIsReloading] = useState(false);
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({
     nombre: '',
     dni: '',
@@ -57,12 +57,19 @@ export default function CheckoutPage() {
   ];
 
   useEffect(() => {
-    if (!user && !loading) {
-      router.push('/login');
+    if (user && !loading) {
+      refreshUser().then(() => {
+
+        if (!sessionStorage.getItem('checkout_reloaded')) {
+          sessionStorage.setItem('checkout_reloaded', 'true');
+          setIsReloading(true);
+          router.refresh();
+        }
+      });
     }
-    if (user && items.length === 0 && !loading) {
-      router.push('/cart');
-    }
+  }, [user, loading, router]);
+
+  useEffect(() => {
     if (user) {
       setShippingInfo(prev => ({
         ...prev,
@@ -72,7 +79,16 @@ export default function CheckoutPage() {
         direccion: user.direccion || '',
       }));
     }
-  }, [user, items, loading, router]);
+  }, [user]);
+
+  useEffect(() => {
+    if (!user && !loading && !isReloading) {
+      router.push('/login');
+    }
+    if (user && items.length === 0 && !cartLoading) {
+      router.push('/cart');
+    }
+  }, [user, items, loading, cartLoading, router, isReloading]);
 
   const handleShippingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,10 +114,11 @@ export default function CheckoutPage() {
       };
 
       const response = await api.post('/orders', orderData);
-      
-      // Limpiar carrito
+
       await clearCart();
-      
+
+      sessionStorage.removeItem('checkout_reloaded');
+
       toast.success('Pedido realizado exitosamente');
       router.push(`/orders/${response.data.order.id}`);
     } catch (error: any) {
@@ -111,7 +128,7 @@ export default function CheckoutPage() {
     }
   };
 
-  if (loading) {
+  if (loading || cartLoading || isReloading) {
     return (
       <>
         <Navbar />
@@ -135,7 +152,6 @@ export default function CheckoutPage() {
       <div className={styles.container}>
         <h1 className={styles.title}>Finalizar Compra</h1>
 
-        {/* Steps */}
         <div className={styles.steps}>
           <div className={`${styles.step} ${step >= 1 ? styles.active : ''}`}>
             <div className={styles.stepNumber}>1</div>
@@ -234,7 +250,7 @@ export default function CheckoutPage() {
             {step === 2 && (
               <Card className={styles.formCard}>
                 <h2 className={styles.sectionTitle}>Método de pago</h2>
-                
+
                 <div className={styles.paymentMethods}>
                   {paymentMethods.map((method) => (
                     <label key={method.key} className={styles.paymentOption}>
@@ -281,9 +297,9 @@ export default function CheckoutPage() {
 
                 <div className={styles.formActions}>
                   <Button label="Volver" icon="pi pi-arrow-left" onClick={() => setStep(1)} text />
-                  <Button 
-                    label="Confirmar pedido" 
-                    icon="pi pi-check" 
+                  <Button
+                    label="Confirmar pedido"
+                    icon="pi pi-check"
                     onClick={handlePaymentSubmit}
                     loading={loadingSubmit}
                     className={styles.confirmBtn}
@@ -296,7 +312,7 @@ export default function CheckoutPage() {
           <div className={styles.summarySection}>
             <Card className={styles.summaryCard}>
               <h3 className={styles.summaryTitle}>Resumen del pedido</h3>
-              
+
               <div className={styles.summaryItems}>
                 {items.map((item) => (
                   <div key={item.id} className={styles.summaryItem}>

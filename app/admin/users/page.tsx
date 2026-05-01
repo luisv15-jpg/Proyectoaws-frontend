@@ -53,12 +53,30 @@ export default function AdminUsersPage() {
 
   const handleDeleteUser = (user: User) => {
     confirmDialog({
-      message: `¿Mover a ${user.nombre} a la papelera?`,
-      header: 'Confirmar',
-      icon: 'pi pi-exclamation-triangle',
+      message: (
+        <div className={styles.confirmMessage}>
+          <div className={styles.confirmIcon}>
+            <i className="pi pi-exclamation-triangle"></i>
+          </div>
+          <div className={styles.confirmText}>
+            <strong>¿Mover a {user.nombre} a la papelera?</strong>
+            <p>El usuario será desactivado y podrá ser restaurado desde la papelera.</p>
+          </div>
+        </div>
+      ),
+      header: (
+        <div className={styles.confirmHeader}>
+          <i className="pi pi-trash"></i>
+          <span>Confirmar eliminación</span>
+        </div>
+      ),
       acceptLabel: 'Sí, mover',
       rejectLabel: 'Cancelar',
       acceptClassName: 'p-button-danger',
+      rejectClassName: 'p-button-secondary',
+      className: styles.customConfirmDialog,
+      acceptIcon: 'pi pi-check',
+      rejectIcon: 'pi pi-times',
       accept: async () => {
         try {
           await api.patch(`/users/${user.id}/soft-delete`);
@@ -79,12 +97,22 @@ export default function AdminUsersPage() {
 
   const saveEdit = async () => {
     try {
-      await api.put(`/users/${selectedUser?.id}`, editForm);
+
+      await api.put(`/users/${selectedUser?.id}`, {
+        nombre: editForm.nombre,
+        email: editForm.email,
+      });
+
+      if (editForm.role !== selectedUser?.role) {
+        await api.put(`/users/${selectedUser?.id}/role`, { role: editForm.role });
+      }
+
       toast.success('Usuario actualizado');
       setEditDialogVisible(false);
       fetchUsers();
-    } catch (error) {
-      toast.error('Error al actualizar');
+    } catch (error: any) {
+      console.error('Error:', error.response?.data);
+      toast.error(error.response?.data?.message || 'Error al actualizar');
     }
   };
 

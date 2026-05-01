@@ -335,7 +335,7 @@ export default function ProfilePage() {
                       <label>Altura (cm)</label>
                       <InputText
                         type="number"
-                        value={profile.altura_cm || ''}
+                        value={profile.altura_cm?.toString()}
                         onChange={(e) => setProfile({ ...profile, altura_cm: parseInt(e.target.value) || null })}
                         placeholder="Ej: 170"
                       />
@@ -344,7 +344,7 @@ export default function ProfilePage() {
                       <label>Peso (kg)</label>
                       <InputText
                         type="number"
-                        value={profile.peso_kg || ''}
+                        value={profile.peso_kg?.toString() || ''}
                         onChange={(e) => setProfile({ ...profile, peso_kg: parseInt(e.target.value) || null })}
                         placeholder="Ej: 70"
                       />

@@ -16,6 +16,7 @@ import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import toast from 'react-hot-toast';
 import styles from './page.module.css';
+import Footer from '@/components/layout/Footer';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -147,7 +148,7 @@ export default function ProductDetailPage() {
                 item={itemTemplate}
                 thumbnail={thumbnailTemplate}
                 className={styles.galleria}
-                showThumbnails={images.length > 1}
+                showThumbnails={false}
                 showIndicators={false}
                 showItemNavigators
                 showItemNavigatorsOnHover
@@ -312,6 +313,7 @@ export default function ProductDetailPage() {
           </div>
         )}
       </div>
+      <Footer/>
     </>
   );
 }

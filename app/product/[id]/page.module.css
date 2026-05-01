@@ -59,13 +59,31 @@
   overflow: hidden;
 }
 
+.galleria :global(.p-galleria) {
+  background: transparent !important;
+  border: none;
+}
+
+.galleria :global(.p-galleria-content) {
+  background: transparent !important;
+}
+
+.galleria :global(.p-galleria-item-wrapper) {
+  background: transparent !important;
+}
+
+.galleria :global(.p-galleria-thumbnail-wrapper) {
+  background: transparent !important;
+}
+
+
 .galleria {
   width: 100%;
 }
 
 .galleriaImage {
   width: 100%;
-  height: 604px;
+  height: 700px;
   object-fit: cover;
 }
 
@@ -433,7 +451,7 @@
 
 .relatedImage {
   width: 100%;
-  height: 200px;
+  height: 300px;
   object-fit: cover;
 }
 

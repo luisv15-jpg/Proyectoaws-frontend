@@ -44,11 +44,30 @@ export default function TrashUsersPage() {
 
   const handleRestore = (user: DeletedUser) => {
     confirmDialog({
-      message: `¿Restaurar a ${user.nombre}?`,
-      header: 'Confirmar restauración',
-      icon: 'pi pi-refresh',
+      message: (
+        <div className={styles.confirmMessage}>
+          <div className={styles.confirmIcon}>
+            <i className="pi pi-refresh"></i>
+          </div>
+          <div className={styles.confirmText}>
+            <strong>¿Restaurar a {user.nombre}?</strong>
+            <p>El usuario volverá a estar activo en la plataforma.</p>
+          </div>
+        </div>
+      ),
+      header: (
+        <div className={styles.confirmHeader}>
+          <i className="pi pi-refresh"></i>
+          <span>Confirmar restauración</span>
+        </div>
+      ),
       acceptLabel: 'Sí, restaurar',
+      rejectLabel: 'Cancelar',
       acceptClassName: 'p-button-success',
+      rejectClassName: 'p-button-secondary',
+      className: styles.customConfirmDialog,
+      acceptIcon: 'pi pi-check',
+      rejectIcon: 'pi pi-times',
       accept: async () => {
         try {
           await api.patch(`/users/${user.id}/restore`);
@@ -63,11 +82,30 @@ export default function TrashUsersPage() {
 
   const handlePermanentDelete = (user: DeletedUser) => {
     confirmDialog({
-      message: `¿Eliminar permanentemente a ${user.nombre}? Esta acción no se puede deshacer.`,
-      header: 'Eliminación permanente',
-      icon: 'pi pi-exclamation-triangle',
+      message: (
+        <div className={styles.confirmMessage}>
+          <div className={styles.confirmIcon}>
+            <i className="pi pi-exclamation-triangle"></i>
+          </div>
+          <div className={styles.confirmText}>
+            <strong>¿Eliminar permanentemente a {user.nombre}?</strong>
+            <p>⚠️ Esta acción no se puede deshacer. El usuario será eliminado de la base de datos.</p>
+          </div>
+        </div>
+      ),
+      header: (
+        <div className={styles.confirmHeader}>
+          <i className="pi pi-times-circle"></i>
+          <span>Eliminación permanente</span>
+        </div>
+      ),
       acceptLabel: 'Sí, eliminar',
+      rejectLabel: 'Cancelar',
       acceptClassName: 'p-button-danger',
+      rejectClassName: 'p-button-secondary',
+      className: styles.customConfirmDialog,
+      acceptIcon: 'pi pi-check',
+      rejectIcon: 'pi pi-times',
       accept: async () => {
         try {
           await api.delete(`/users/${user.id}`);
