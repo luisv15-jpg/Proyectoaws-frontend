@@ -44,6 +44,9 @@ export default function AdminProductsPage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [hasOffer, setHasOffer] = useState(false);
   const [hasOfferEdit, setHasOfferEdit] = useState(false);
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(12);
+  const [totalProducts, setTotalProducts] = useState(0);
 
   const [createForm, setCreateForm] = useState({
     nombre: '',
@@ -93,17 +96,34 @@ export default function AdminProductsPage() {
     fetchProducts();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (page: number = 1, limit: number = 100) => {
     setLoading(true);
     try {
-      const response = await api.get('/products/admin/all');
-      setProducts(response.data.products || []);
+      const response = await api.get('/products/admin/all?page=' + page + '&limit=' + limit);
+      const productsData = response.data.products || [];
+      setProducts(productsData);
+      setTotalProducts(productsData.length);
     } catch (error) {
       console.error('Error fetching products:', error);
       toast.error('Error al cargar productos');
+      setProducts([]);
+      setTotalProducts(0);
     } finally {
       setLoading(false);
     }
+
+    useEffect(() => {
+      fetchProducts(1, rows);
+    }, []);
+
+    const onPageChange = (event: any) => {
+      const newPage = event.page + 1;
+      const newRows = event.rows;
+      setFirst(event.first);
+      setRows(newRows);
+      fetchProducts(newPage, newRows);
+    }
+
   };
 
   const handleCreateProduct = async () => {
