@@ -1,6 +1,6 @@
 # Velvet – Frontend de tienda de ropa en AWS
 
-Tienda de ropa en línea hecha con Next.js, TypeScript y PrimeReact. Consume la API de [Proyectoaws-backend](https://github.com/luisv15-jpg/Proyectoaws-backend) y guarda las imágenes de productos y perfiles en Amazon S3.
+Tienda de ropa en línea hecha con Next.js, TypeScript y PrimeReact. Consume la API de [Proyectoaws-backend](https://github.com/luisv15-jpg/Proyectoaws-backend) y sube las imágenes de productos y perfiles a Amazon S3 con URLs firmadas por el backend.
 
 ## Funcionalidades
 
@@ -23,7 +23,7 @@ Tienda de ropa en línea hecha con Next.js, TypeScript y PrimeReact. Consume la 
 | UI | PrimeReact, Tailwind CSS 4, CSS Modules, Lucide |
 | Formularios | React Hook Form y Zod |
 | Datos | Axios, Context API para sesión y carrito |
-| AWS | Amazon S3 para las imágenes |
+| AWS | Amazon S3 para las imágenes (subida con URL firmada) |
 
 ## Instalación
 
@@ -42,13 +42,9 @@ Crea un archivo `.env.local` con:
 
 ```
 NEXT_PUBLIC_API_URL=http://localhost:3002
-NEXT_PUBLIC_AWS_REGION=us-east-1
-NEXT_PUBLIC_S3_BUCKET_NAME=
-NEXT_PUBLIC_AWS_ACCESS_KEY_ID=
-NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY=
 ```
 
-Las variables con prefijo `NEXT_PUBLIC_` quedan visibles en el navegador. Para las credenciales de AWS usa un usuario IAM que solo pueda subir archivos a ese bucket.
+El frontend no guarda credenciales de AWS. Para subir una imagen pide al backend una URL firmada (`POST /uploads/presign`) y envía el archivo directo a S3.
 
 ## Estructura
 

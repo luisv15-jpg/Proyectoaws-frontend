@@ -1,49 +1,42 @@
-import AWS from 'aws-sdk';
+import api from './api';
 
-AWS.config.update({
-  region: process.env.NEXT_PUBLIC_AWS_REGION,
-  accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
-});
+type UploadFolder = 'products' | 'avatars';
 
-const s3 = new AWS.S3();
+interface PresignResponse {
+  url: string;
+  fields: Record<string, string>;
+  publicUrl: string;
+}
 
-export async function uploadToS3(file: File, folder: string = 'products'): Promise<string> {
-  return new Promise((resolve, reject) => {
-    // Validar tipo de archivo
-    if (!file.type.startsWith('image/')) {
-      reject(new Error('Solo se permiten imágenes'));
-      return;
-    }
+/**
+ * Sube una imagen a S3 sin credenciales de AWS en el navegador:
+ * 1. El backend valida la petición y devuelve una URL firmada (POST /uploads/presign).
+ * 2. El navegador envía el archivo directo a S3 con esa firma.
+ * Devuelve la URL pública de la imagen.
+ */
+export async function uploadToS3(file: File, folder: UploadFolder = 'products'): Promise<string> {
+  if (!file.type.startsWith('image/')) {
+    throw new Error('Solo se permiten imágenes');
+  }
 
-    // Validar tamaño (máximo 2MB para avatar)
-    if (file.size > 2 * 1024 * 1024) {
-      reject(new Error('La imagen no puede superar los 2MB'));
-      return;
-    }
+  if (file.size > 2 * 1024 * 1024) {
+    throw new Error('La imagen no puede superar los 2MB');
+  }
 
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const buffer = e.target?.result as ArrayBuffer;
-      const fileName = `${Date.now()}-${file.name.replace(/\s/g, '-')}`;
-      const key = `${folder}/${fileName}`;
-      
-      const params = {
-        Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME!,
-        Key: key,
-        Body: Buffer.from(buffer),
-        ContentType: file.type,
-        ACL: 'public-read',
-      };
-      
-      try {
-        const result = await s3.upload(params).promise();
-        resolve(result.Location);
-      } catch (error) {
-        reject(error);
-      }
-    };
-    reader.onerror = (error) => reject(error);
-    reader.readAsArrayBuffer(file);
+  const { data } = await api.post<PresignResponse>('/uploads/presign', {
+    fileName: file.name,
+    contentType: file.type,
+    folder,
   });
+
+  const form = new FormData();
+  Object.entries(data.fields).forEach(([key, value]) => form.append(key, value));
+  form.append('file', file); // S3 exige que el archivo vaya al final
+
+  const response = await fetch(data.url, { method: 'POST', body: form });
+  if (!response.ok) {
+    throw new Error('No se pudo subir la imagen a S3');
+  }
+
+  return data.publicUrl;
 }
