@@ -14,7 +14,6 @@
     "@stripe/react-stripe-js": "^6.2.0",
     "@stripe/stripe-js": "^9.2.0",
     "aos": "^2.3.4",
-    "aws-sdk": "^2.1693.0",
     "axios": "^1.15.0",
     "chart.js": "^4.5.1",
     "class-variance-authority": "^0.7.1",
